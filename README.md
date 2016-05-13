@@ -1,6 +1,6 @@
 # TinyLightsConf
 
-This is the desktop util to control [TinyLights](https://www.hackerspace-bamberg.de/TinyLights) through USB
+This is the desktop util to control [TinyLights](https://www.hackerspace-bamberg.de/TinyLights) through USB. You can find the corresponding arduino software in the [b4ckspace/tinylights-arduino](https://github.com/b4ckspace/tinylights-arduino) repository.
 
 ## Dependencies
 
