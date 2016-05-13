@@ -22,7 +22,7 @@ ArrayList<Bang> ledLights = new ArrayList<Bang>();
 
 void setup() {
   size(490, 290);
-
+  
   controlP5 = new ControlP5(this);
   
   colorWheel = controlP5
@@ -36,8 +36,12 @@ void setup() {
     Map<String, String> props = Serial.getProperties(ports[i]);
     print(ports[i]+": ");
     
-    String idVendor = props.get("idVendor");
-    if(idVendor != null && idVendor.equals(arduinoVendor)) {
+    if(System.getProperty("os.name").equals("Linux")) {
+      String idVendor = props.get("idVendor");
+      if(idVendor != null && idVendor.equals(arduinoVendor)) {
+        serialPorts = append(serialPorts, ports[i]);
+      }
+    } else {
       serialPorts = append(serialPorts, ports[i]);
     }
   }
