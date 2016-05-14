@@ -14,6 +14,7 @@ String[] serialPorts = {};
 Boolean connected = false;
 
 int numLedLights = 0;
+int numLedLightsCreate = -1;
 int currentLedLightIndex = -1;
 
 String arduinoVendor = "1a86";
@@ -88,6 +89,12 @@ void draw () {
 
   textSize(16);
   text("TinyLights Configuration", 20, 30);
+  
+  if(numLedLightsCreate > -1) {
+    int tmp = numLedLightsCreate;
+    createLedLights(numLedLightsCreate);
+    numLedLightsCreate = -1;
+  }
 }
 
 void createLedLights(int num) {
@@ -111,7 +118,14 @@ void createLedLights(int num) {
       .setValue(i);
   }
   
+  for(int i = 0; i < num; i++) {
+    String frame = buildFrame(new String[]{"GET", str(i) });
+    serialConnection.write(frame);
+  }
+  
   numLedLights = num;
+  
+  saveButton.setVisible(true);
 }
 
 void controlEvent(ControlEvent event) {
@@ -197,15 +211,7 @@ void serialEvent(Serial serialDevice) {
             .setColorForeground(color(int(args[2]), int(args[3]), int(args[4])));
         }
       } else if(args[0].equals("NUM") && args.length == 2) {
-          int numLeds = int(args[1]);
-          
-          createLedLights(numLeds);
-          saveButton.setVisible(true);
-          
-          for(int i = 0; i < numLeds; i++) {
-            String frame = buildFrame(new String[]{"GET", str(i) });
-            serialConnection.write(frame);
-          }
+          numLedLightsCreate = int(args[1]);
       } else if(args[0].equals("HI")) {
         String frame = buildFrame(new String[]{"NUM"});
         serialConnection.write(frame);   
